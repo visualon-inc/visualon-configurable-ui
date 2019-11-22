@@ -1,0 +1,24 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-titlebar {
+    position: absolute;
+    top: 6px;
+    z-index: $zIndex_titlebar;
+    padding: 12px;
+    pointer-events: none;
+  }
+  .vop-titlebar-title {
+    color: #FFFFFF;
+    font-size: 2.4em;
+    text-shadow: 0 0 5px #000;
+    white-space: normal;
+    display: block;
+  }
+  .vop-titlebar-description {
+    color: #e6e6e6;
+    text-shadow: 0 0 5px #000;
+    white-space: normal;
+    display: block;
+  }
+}

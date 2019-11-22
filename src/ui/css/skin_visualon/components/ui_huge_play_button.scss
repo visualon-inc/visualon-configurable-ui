@@ -1,0 +1,60 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-huge-button-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -24px;
+    margin-top: -24px;
+    z-index: $zIndex_giant_button_container;
+    background: transparent;
+    -moz-animation: vop-bezel-fadeout .5s linear 1 normal forwards;
+    -webkit-animation: vop-bezel-fadeout .5s linear 1 normal forwards;
+    animation: vop-bezel-fadeout .5s linear 1 normal forwards;
+    pointer-events: none;
+  }
+  @-webkit-keyframes vop-bezel-fadeout {
+    0% {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+      transform: scale(2);
+    }
+  }
+  @keyframes vop-bezel-fadeout {
+    0% {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+      transform: scale(2);
+    }
+  }
+  .vop-huge-button {
+    width: 48px;
+    height: 48px;
+    background-image: url(../assets/svg/ic_play_arrow_48px.svg);
+    background-color: #389DFF;
+    cursor: pointer;
+    border-radius: 24px;
+    border: 0px;
+  }
+
+  .vop-style-play-giant {
+    background-image: url(../assets/svg/ic_play_arrow_48px.svg);
+  }
+  .vop-style-pause-giant {
+    background-image: url(../assets/svg/ic_pause_48px.svg);
+  }
+
+  .vop-style-play-giant,
+  .vop-style-pause-giant {
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+
+

@@ -1,0 +1,18 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-cast-button {
+    background-image: url(../assets/svg/Chromecast_cast_button_icon.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    display: none;
+  }
+
+
+  .vop-cast-button-connected {
+    background-image: url(../assets/svg/Chromecast_cast_button_icon_connected.svg);
+  }
+}
+
+
+

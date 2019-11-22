@@ -1,0 +1,33 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-play-overlay-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -48px;
+    margin-top: -48px;
+    z-index: $zIndex_giant_button_container;
+    display: none;
+  }
+  .vop-play-overlay {
+    width: 96px;
+    height: 96px;
+    background-image: url(../assets/svg/ic_play_arrow_96px.svg);
+    cursor: pointer;
+    border-radius: 24px;
+    border: 0px;
+  }
+}
+
+.vop-player-opened .vop-play-overlay-container {
+  display: block;
+}
+
+.vop-player-paused .vop-play-overlay-container {
+  display: block;
+}
+
+.vop-player-ended .vop-play-overlay-container {
+  display: block;
+}

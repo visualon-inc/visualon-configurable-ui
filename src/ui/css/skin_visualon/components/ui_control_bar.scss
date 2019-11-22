@@ -1,0 +1,28 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-control-bar {
+    width: 100%;
+    height: auto;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .vop-left-controls {
+    height: auto;
+    float: left;
+  }
+  .vop-right-controls {
+    height: auto;
+    float: right;
+  }
+}
+
+
+
+
+

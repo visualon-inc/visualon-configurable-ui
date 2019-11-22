@@ -1,0 +1,22 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-fullscreen-button {
+
+    // & means .#{$skinVisualon} itself here.
+    &.icon-on {
+      background-image: url(../assets/svg/ic_fullscreen_24px.svg);
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    &.icon-off {
+      background-image: url(../assets/svg/ic_fullscreen_exit_24px.svg);
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+}
+
+
+

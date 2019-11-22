@@ -1,0 +1,39 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-time-display {
+    padding-left: 6px;
+    width: auto;
+    height: 100%;
+    display: inline-table;
+    /*Don't enable select state*/
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  .vop-time-text {
+    color: white;
+    display: block;
+    vertical-align: middle;
+    padding-left: .2em;
+  }
+  .vop-time-text-live {
+    cursor: pointer
+  }
+  .vop-time-text-live::before {
+    color: #FF0000;
+    content: '●';
+    padding-right: .2em;
+  }
+  .vop-time-text-live-gray {
+    cursor: pointer
+  }
+  .vop-time-text-live-gray::before {
+    color: #999999;
+    content: '●';
+    padding-right: .2em;
+  }
+}

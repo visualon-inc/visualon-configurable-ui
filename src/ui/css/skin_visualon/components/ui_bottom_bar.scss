@@ -1,0 +1,18 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-bottom-bar {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 0px;
+    z-index: $zIndex_control_bar;
+    display: block;
+  }
+}
+
+.vop-player-idle .#{$skinVisualon} .vop-bottom-bar,
+.vop-player-opening .#{$skinVisualon} .vop-bottom-bar,
+.vop-player-opened .#{$skinVisualon} .vop-bottom-bar {
+  display: none;
+}

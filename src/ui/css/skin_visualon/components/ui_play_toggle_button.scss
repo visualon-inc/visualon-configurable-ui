@@ -1,0 +1,34 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-play-button {
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+.vop-player-playing {
+  .#{$skinVisualon} .vop-play-button {
+    background-image: url(../assets/svg/ic_pause_24px.svg);
+  }
+}
+
+.vop-player-paused {
+  .#{$skinVisualon} .vop-play-button {
+    background-image: url(../assets/svg/ic_play_arrow_24px.svg);
+  }
+}
+
+.vop-player-ended {
+  .#{$skinVisualon} .vop-play-button {
+    background-image: url(../assets/svg/ic_replay_24px.svg);
+  }
+}
+
+
+
+
+
+
+
+

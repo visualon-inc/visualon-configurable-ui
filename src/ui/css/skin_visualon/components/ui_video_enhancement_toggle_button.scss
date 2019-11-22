@@ -1,0 +1,10 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-video-enhancement-button {
+    background-image: url(../assets/svg/ic_video_enhancement_24px.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+

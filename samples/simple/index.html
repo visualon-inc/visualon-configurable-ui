@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Stict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+  <!-- viewport tag only valid to mobile browser. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+  <!-- google cast sender sdk -->
+  <script defer type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+
+  <!-- player SDK & plugin -->
+  <script src="https://d2oqx05f1pe3rg.cloudfront.net/latest/libs/voplayer.min.js"></script>
+  <!-- player ui sdk -->
+  <link href="https://d2oqx05f1pe3rg.cloudfront.net/latest/libs/voplayer-ui.min.css" rel="stylesheet" />
+  <script src="https://d2oqx05f1pe3rg.cloudfront.net/latest/libs/voplayer-ui.min.js"></script>
+
+  <style type="text/css">
+  .vop-skin-visualon .vop-play-progress {
+    background-color: #00FF00;
+  }
+
+  .vop-skin-visualon .vop-scrubber-container {
+    background-color: #00FF00;
+   }
+
+  .vop-skin-visualon .vop-time-text {
+    color: #00FF00;
+  }
+  </style>
+
+  <style type="text/css">
+    body {
+      background-color: white;
+    }
+
+    .vop-player-frame {
+      position: relative;
+      width: 480px;
+      height: 320px;
+      background: black;
+    }
+
+    #player-container {
+      position: absolute;
+    }
+
+    .idDiv01 {
+      width: 251px;
+      height: 100px;
+      background-image: url('./logo1.svf')
+    }
+
+
+  </style>
+  <script src="./js/main.js"></script>
+</head>
+<body>
+  <div class="vop-player-frame">
+    <div id="player-container">
+    </div>
+  </div>
+  <br/>
+  <button onclick="onBtnOpen()">open</button>
+
+
+  <div class="idDiv01">
+  </div>
+</body>
+</html>
+
+
+

@@ -1,0 +1,28 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-volume-button {
+    &.icon-down {
+      background-image: url(../assets/svg/ic_volume_down_24px.svg);
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    &.icon-up {
+      background-image: url(../assets/svg/ic_volume_up_24px.svg);
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    &.icon-off {
+      background-image: url(../assets/svg/ic_volume_off_24px.svg);
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+}
+
+
+
+
+

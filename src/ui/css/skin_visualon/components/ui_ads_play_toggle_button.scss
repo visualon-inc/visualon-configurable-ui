@@ -1,0 +1,35 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-ads-play-toggle-button {
+    display: none;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+.vop-player-playing {
+  .#{$skinVisualon} .vop-ads-play-toggle-button {
+    background-image: url(../assets/svg/ic_pause_24px.svg);
+  }
+}
+
+.vop-player-paused {
+  .#{$skinVisualon} .vop-ads-play-toggle-button {
+    background-image: url(../assets/svg/ic_play_arrow_24px.svg);
+  }
+}
+
+.vop-player-ended {
+  .#{$skinVisualon} .vop-ads-play-toggle-button {
+    background-image: url(../assets/svg/ic_play_arrow_24px.svg);
+  }
+}
+
+
+
+
+
+
+
+

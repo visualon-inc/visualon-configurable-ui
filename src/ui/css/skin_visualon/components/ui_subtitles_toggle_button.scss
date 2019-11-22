@@ -1,0 +1,10 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-subtitles-button {
+    background-image: url(../assets/svg/ic_subtitles_24px.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+

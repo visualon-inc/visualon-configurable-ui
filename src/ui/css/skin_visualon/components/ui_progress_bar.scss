@@ -1,0 +1,83 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-progress-bar {
+    position: relative;
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    outline: none;
+    background: rgba(192, 192, 192, .3);
+
+    -moz-transform: scaleY(0.6);
+    -ms-transform: scaleY(0.6);
+    -webkit-transform: scaleY(0.6);
+    transform: scaleY(0.6);
+    -moz-transition: -moz-transform .1s cubic-bezier(0.4, 0.0, 1, 1);
+    -webkit-transition: -webkit-transform .1s cubic-bezier(0.4, 0.0, 1, 1);
+    -ms-transition: -ms-transform .1s cubic-bezier(0.4, 0.0, 1, 1);
+    transition: transform .1s cubic-bezier(0.4, 0.0, 1, 1);
+  }
+  .vop-progress-list {
+    background: rgba(255, 255, 255, .2);
+    height: 100%;
+    width: 100%;
+  }
+  .vop-load-progress,
+  .vop-hover-progress,
+  .vop-play-progress {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 100%;
+    -moz-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+  }
+  .vop-load-progress {
+    background: rgba(255, 255, 255, .4);
+    transform: scaleX(0.4);
+  }
+  .vop-play-progress {
+    background-color: $clr_front;
+    transform: scaleX(0.5);
+  }
+  .vop-hover-progress {
+    background: rgba(255, 255, 255, .5);
+    opacity: 0;
+    -moz-transition: opacity .25s cubic-bezier(0.0, 0.0, 0.2, 1);
+    -webkit-transition: opacity .25s cubic-bezier(0.0, 0.0, 0.2, 1);
+    transition: opacity .25s cubic-bezier(0.0, 0.0, 0.2, 1);
+  }
+  .vop-progress-bar:hover {
+    -moz-transform: none;
+    -ms-transform: none;
+    -webkit-transform: none;
+    transform: none;
+    -moz-transition: -moz-transform .1s cubic-bezier(0.0, 0.0, 0.2, 1);
+    -webkit-transition: -webkit-transform .1s cubic-bezier(0.0, 0.0, 0.2, 1);
+    -ms-transition: -ms-transform .1s cubic-bezier(0.0, 0.0, 0.2, 1);
+    transition: transform .1s cubic-bezier(0.0, 0.0, 0.2, 1)
+  }
+  .vop-progress-bar:hover .vop-hover-progress {
+    opacity: 1;
+  }
+  .vop-scrubber-container {
+    position: absolute;
+    height: 13px;
+    width: 13px;
+    border-radius: 6.5px;
+    top: -4px;
+    left: -6.5px;
+    background-color: $clr_front;
+    transform: translateX(0px);
+    pointer-events: none;
+    display: none;
+  }
+}
+
+
+
+

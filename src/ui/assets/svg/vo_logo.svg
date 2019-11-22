@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1004px" height="400px" viewBox="0 0 1004 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
+    <title>Untitled</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <ellipse id="Oval-4" stroke="#F38518" stroke-width="12" cx="199.8002" cy="200" rx="193.8002" ry="194"></ellipse>
+            <path d="M117.882118,90.0162819 L117.882118,320.52675 C117.882118,328.811022 124.597847,335.52675 132.882118,335.52675 C135.466593,335.52675 138.007225,334.858979 140.257688,333.588181 L345.880582,217.476395 C353.094211,213.402981 355.639857,204.253024 351.566443,197.039395 C350.223945,194.66196 348.258017,192.696031 345.880582,191.353534 L141.749392,76.0840893 C134.054855,71.7391135 124.294901,74.4544698 119.949925,82.1490074 C118.594407,84.549501 117.882118,87.2595085 117.882118,90.0162819 Z" id="Path-4" fill="#4A90E2"></path>
+        </g>
+        <text id="VisualOn" font-family="Helvetica-Oblique, Helvetica" font-size="150" font-style="italic" font-weight="normal">
+            <tspan x="393.606394" y="371" fill="#F38518">V</tspan>
+            <tspan x="491.018503" y="371" fill="#2994EC">isual</tspan>
+            <tspan x="799.514597" y="371" fill="#F38518">O</tspan>
+            <tspan x="916.189401" y="371" fill="#2994EC">n</tspan>
+        </text>
+    </g>
+</svg>

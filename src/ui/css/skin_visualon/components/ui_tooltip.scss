@@ -1,0 +1,47 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-tooltip {
+    position: absolute;
+    bottom: 50px;
+    z-index: $zIndex_tooltip;
+    display: none;
+  }
+  .vop-tooltip-bg {
+    position: relative;
+    background-color: #000;
+    display: none;
+  }
+  .vop-tooltip-text-wrapper {
+    /*background-color: orange;*/
+    border-radius: 3px;
+  }
+  .vop-tooltip-text {
+    display: block;
+    color: white;
+    border-radius: 2px;
+    padding: 5px 9px;
+    background-color: rgba(28, 28, 28, 0.9);
+  }
+  .vop-tooltip-preview {
+    padding: 2px;
+    background-color: rgba(28, 28, 28, 0.9);
+    border-radius: 2px
+  }
+  .vop-tooltip-preview .vop-tooltip-bg {
+    display: block;
+  }
+  .vop-tooltip-preview .vop-tooltip-text-wrapper {
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
+  .vop-tooltip-preview .vop-tooltip-text {
+    display: inline;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0
+  }
+}
+

@@ -1,0 +1,63 @@
+/* Skin name class */
+$skinVisualon: 'vop-skin-visualon' !default;
+
+$zIndex_titlebar: 2;
+$zIndex_gradient_bottom: 2;
+$zIndex_caption_overlay: 2;
+$zIndex_spinner: 2;
+$zIndex_giant_button_container: 2;
+$zIndex_skin_container: 1;
+$zIndex_control_bar: 2;
+$zIndex_logo: 2;
+$zIndex_cast_overlay: 2;
+$zIndex_errormsg_overlay: 5;
+
+/* No matter ad show or not, the tooltip & popupmenu show overlay on the top of it. */
+$zIndex_tooltip: 2;
+$zIndex_popup_menu: 2;
+
+
+/************ Begin Player State ************/
+/* state: idle */
+
+/* state: opening */
+
+/* state: opened */
+
+/* state: playing */
+
+/* state: paused */
+
+/* state: ended */
+
+/************ Begin Framework ************/
+.vop-skin-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.vop-autohide {
+  cursor: none
+}
+
+.vop-autohide .vop-gradient-bottom {
+  display: none;
+}
+
+.vop-autohide .vop-bottom-bar {
+  opacity: 0;
+  -moz-transition: opacity .25s cubic-bezier(0.0, 0.0, 0.2, 1);
+  -webkit-transition: opacity .25s cubic-bezier(0.0, 0.0, 0.2, 1);
+  transition: opacity .25s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+.vop-autohide:not(.vop-huge-button-container) {
+  cursor: none;
+}
+
+/************ Begin UI Themes ************/
+$clr_front: rgb(56,157,255);
+
+
+
