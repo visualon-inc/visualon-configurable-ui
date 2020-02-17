@@ -51,6 +51,11 @@ class UITvNoiseCanvas {
     let canvasHeight_ = this.canvasElement_.clientHeight;
     let noiseAnimationWindowPos_ = -canvasHeight_;
 
+    if (canvasWidth_ == 0) {
+        canvasWidth_ = document.getElementById('player-container').clientWidth;
+        canvasHeight_ = document.getElementById('player-container').clientHeight;
+    }
+
     // Create texture
     let noiseImage = this.canvasContext_.createImageData(canvasWidth_, canvasHeight_);
 

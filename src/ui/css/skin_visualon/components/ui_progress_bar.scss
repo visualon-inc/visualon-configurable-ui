@@ -38,11 +38,11 @@
   }
   .vop-load-progress {
     background: rgba(255, 255, 255, .4);
-    transform: scaleX(0.4);
+    transform: scaleX(0);
   }
   .vop-play-progress {
     background-color: $clr_front;
-    transform: scaleX(0.5);
+    transform: scaleX(0);
   }
   .vop-hover-progress {
     background: rgba(255, 255, 255, .5);

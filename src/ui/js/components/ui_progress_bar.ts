@@ -34,7 +34,7 @@ class UIProgressBar extends UIComponent {
   constructor(context) {
     super(context);
     // flags reference variable of progress bar
-    this.progressBarContext_;
+    this.progressBarContext_ = null;
     this.progressBarMoveContext_ = {
       movePos: 0
     };
@@ -261,8 +261,9 @@ class UIProgressBar extends UIComponent {
     this.doEnterThumbnailMode();
     this.doProcessThumbnailMove();
 
-    if(this.progressBarContext_)
+    if (this.progressBarContext_) {
       this.progressBarContext_.movePos = movePos;
+    }
 
     let info: ProgressInfo = UITools.getProgressInfo(this.player_);
     this.updateProgressBarUI(info);
@@ -294,8 +295,9 @@ class UIProgressBar extends UIComponent {
     let info: ProgressInfo = UITools.getProgressInfo(this.player_);
 
     // update ui first
-    if (this.progressBarContext_)
+    if (this.progressBarContext_) {
       this.progressBarContext_.movePos = this.getProgressMovePosition(e);
+    }
     this.updateProgressBarUI(info);
     this.updateProgressBarHoverUI(info);
 
@@ -417,8 +419,7 @@ class UIProgressBar extends UIComponent {
   updateProgressBarHoverUI(info) {
     // do not update hover process bar on IE
     // for IE only:playready: no video only audio was outputed after playing for more than 20s
-    if (!!(window as any).ActiveXObject || 'ActiveXObject' in window)
-    {
+    if (!!(window as any).ActiveXObject || 'ActiveXObject' in window) {
       return;
     }
 
@@ -443,7 +444,15 @@ class UIProgressBar extends UIComponent {
   }
 
   onPlayerOpenFinished() {
+    // reset variables
     this.flagAdBreakStart_ = false;
+    this.progressBarContext_ = null;
+    // reset ui
+    this.vopLoadProgress_.style.transform = 'scaleX(0)';
+    this.vopPlayProgress_.style.transform = 'scaleX(0)';
+    this.vopScrubberContainer_.style.transform = 'translateX(0x)';
+    this.vopHoverProgress_.style.transform = 'scaleX(0)';
+    this.vopHoverProgress_.style.left = '0px';
   }
 }
 

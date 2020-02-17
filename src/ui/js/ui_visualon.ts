@@ -37,7 +37,7 @@ import UIFullscreenToggleButton from './components/ui_fullscreen_toggle_button';
 import UIFastForwardToggleButton from './components/ui_fast_forward_toggle_button'
 import UIFastRewindToggleButton from './components/ui_fast_rewind_toggle_button'
 import UIVideoEnhancementToggleButton from './components/ui_video_enhancement_toggle_button';
-
+import UICardBoardToggleButton from './components/ui_cardboard_toggle_button';
 import UIAdsContainer from './components/ui_ads_container';
 
 class UISkinVisualOn extends UIContainer {
@@ -81,6 +81,10 @@ class UISkinVisualOn extends UIContainer {
       uiControlBar.addComponent(new UIVideoEnhancementToggleButton(this.context_));
     }
 
+    if (this.player_.isVideo360vrSupported()) {
+        uiControlBar.addComponent(new UICardBoardToggleButton(this.context_));
+    }
+
     uiControlBar.addComponent(new UISettingsToggleButton(this.context_));
     uiControlBar.addComponent(new UIFullscreenToggleButton(this.context_));
 
@@ -120,7 +124,8 @@ class UIVisualOn extends UIContainer {
 
   // flag
   private flagTimerHideControlBar_: any;
-  private flagPlayerMouseDown_: any;
+  private flagShouldTogglePlay_: Boolean;
+  private flagTouchMoveCount_: number;
 
   // player functions
   private onPlayerSourceClosed_: Function;
@@ -148,6 +153,8 @@ class UIVisualOn extends UIContainer {
     this.vopSkinContainer_.appendChild(this.uiSkinVisualOn_.getElement());
 
     this.playerState_ = '';
+    this.flagShouldTogglePlay_ = false;
+    this.flagTouchMoveCount_ = 0;
 
     this.initUIEventListeners();
     this.initPlayerListeners();
@@ -284,17 +291,24 @@ class UIVisualOn extends UIContainer {
   }
 
   onPlayerMouseMove(e) {
-    if (this.playerState_ !== 'playing') {
-      return;
-    }
-
     this.showUIForWhile();
+
+    // its hard to tap without a touchmove, if there have been less than one, we should still toggle play
+    if (e.type === 'mousemove' && this.flagTouchMoveCount_ < 1) {
+        this.flagTouchMoveCount_++;
+        return;
+    }
+    this.flagShouldTogglePlay_ = false;
   }
 
   showUIForWhile() {
+    if(this.flagTimerHideControlBar_ != null)
+        return;
+
     this.removeAutohideAction();
     this.flagTimerHideControlBar_ = setTimeout(() => {
       this.onPlayerMouseLeave();
+      this.flagTimerHideControlBar_ = null;
     }, 3000);
   }
 
@@ -315,15 +329,16 @@ class UIVisualOn extends UIContainer {
       return;
     }
 
-    this.flagPlayerMouseDown_ = true;
+    this.flagShouldTogglePlay_ = true;
+    this.flagTouchMoveCount_ = 0;
   }
 
   onPlayerMouseUp(e) {
     if (this.context_.uiConfig.allowScreenControl) {
-      if (this.flagPlayerMouseDown_) {
-        this.flagPlayerMouseDown_ = false;
+        if (this.flagShouldTogglePlay_)  {
+        this.flagShouldTogglePlay_ = false;
         this.eventbus_.emit(Events.PLAY_BUTTON_CLICK);
-      }
+        }
     }
   }
 

@@ -21,6 +21,19 @@ class UIVideoEnhancementToggleButton extends UIButton {
   onHandleClick(e) {
     this.eventbus_.emit(Events.VIDEO_ENHANCEMENT_BUTTON_CLICK);
   }
+
+  updateBtnState() {
+    // when in 360vr mode, enhancement will be hidden, canvas only can do one job.
+    if (this.player_.isVideo360vrSupported()) {
+      this.hide();
+    } else {
+      this.show();
+    }
+  }
+
+  onPlayerOpenFinished() {
+    this.updateBtnState();
+  }
 }
 
 export default UIVideoEnhancementToggleButton;

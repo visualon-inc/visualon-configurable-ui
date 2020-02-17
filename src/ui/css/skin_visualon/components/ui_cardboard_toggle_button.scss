@@ -1,0 +1,9 @@
+@import '../ui_variables';
+
+.#{$skinVisualon} {
+  .vop-cardboard-button {
+    background-image: url(../assets/svg/ic_cardboard_24px.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
