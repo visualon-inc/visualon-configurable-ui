@@ -107,6 +107,8 @@ class UIVolumeBar extends UIComponent {
   }
 
   onVolumeSliderMouseDown(e) {
+    super.hideMenu();
+
     this.captureVolumeSliderMouseEvents();
     e.preventDefault();
     e.stopPropagation();

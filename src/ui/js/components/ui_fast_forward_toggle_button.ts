@@ -7,10 +7,7 @@ class UIFastForwardToggleButton extends UIButton {
     super(context);
     this.trickPlayRate_ = 1;
 
-    this.element_ = document.createElement('div');
-    this.element_.setAttribute('class', 'vop-button vop-fast-forward-button');
-    this.element_.addEventListener('click', this.onUICmdFastRewind.bind(this));
-    this.element_.title = 'FF/1X';
+    this.initElement('vop-button vop-fast-forward-button', 'FF/1X');
 
     this.addPlayerListeners();
   }
@@ -34,7 +31,7 @@ class UIFastForwardToggleButton extends UIButton {
     }
   }
 
-  onUICmdFastRewind() {
+  onHandleClick() {
     this.trickPlayRate_ = (this.trickPlayRate_ < 0 || this.trickPlayRate_ > 8) ?
     1 : this.trickPlayRate_ * 2;
     this.player_.setTrickPlayRate(this.trickPlayRate_);
@@ -53,10 +50,6 @@ class UIFastForwardToggleButton extends UIButton {
     this.trickPlayRate_ = e.rate;
     let showRate = this.trickPlayRate_ < 0 ? 1 : this.trickPlayRate_;
     this.element_.title = 'FF/' + showRate + 'X';
-  }
-
-  onAdComplete() {
-    this.updateBtnState();
   }
 
   updateBtnState() {

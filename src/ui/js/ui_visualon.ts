@@ -81,7 +81,7 @@ class UISkinVisualOn extends UIContainer {
       uiControlBar.addComponent(new UIVideoEnhancementToggleButton(this.context_));
     }
 
-    if (this.player_.isVideo360vrSupported()) {
+    if (this.player_.isVRSupported()) {
         uiControlBar.addComponent(new UICardBoardToggleButton(this.context_));
     }
 
@@ -126,6 +126,7 @@ class UIVisualOn extends UIContainer {
   private flagTimerHideControlBar_: any;
   private flagShouldTogglePlay_: Boolean;
   private flagTouchMoveCount_: number;
+  private flagMenuPopup_: Boolean;
 
   // player functions
   private onPlayerSourceClosed_: Function;
@@ -143,6 +144,7 @@ class UIVisualOn extends UIContainer {
 
   private onProgressbarMouseEnter_: any;
   private onControlBarMouseMove_: any;
+  private onPopupMenuChange_: any;
 
   constructor(context) {
     super(context);
@@ -155,6 +157,7 @@ class UIVisualOn extends UIContainer {
     this.playerState_ = '';
     this.flagShouldTogglePlay_ = false;
     this.flagTouchMoveCount_ = 0;
+    this.flagMenuPopup_ = false;
 
     this.initUIEventListeners();
     this.initPlayerListeners();
@@ -189,8 +192,10 @@ class UIVisualOn extends UIContainer {
 
     this.onProgressbarMouseEnter_ = this.onProgressbarMouseEnter.bind(this);
     this.onControlBarMouseMove_ = this.onControlBarMouseMove.bind(this);
+    this.onPopupMenuChange_ = this.onPopupMenuChange.bind(this);
     this.eventbus_.on(Events.PROGRESSBAR_MOUSEENTER, this.onProgressbarMouseEnter_);
     this.eventbus_.on(Events.CONTROLBAR_MOUSEMOVE, this.onControlBarMouseMove_);
+    this.eventbus_.on(Events.POPUPMENU_CHANGE, this.onPopupMenuChange_);
   }
 
   uninitUIEventListeners() {
@@ -208,8 +213,10 @@ class UIVisualOn extends UIContainer {
 
     this.eventbus_.off(Events.PROGRESSBAR_MOUSEENTER, this.onProgressbarMouseEnter_);
     this.eventbus_.off(Events.CONTROLBAR_MOUSEMOVE, this.onControlBarMouseMove_);
+    this.eventbus_.off(Events.POPUPMENU_CHANGE, this.onPopupMenuChange_);
     this.onProgressbarMouseEnter_ = null;
     this.onControlBarMouseMove_ = null;
+    this.onPopupMenuChange_ = null;
   }
 
   initPlayerListeners() {
@@ -267,6 +274,9 @@ class UIVisualOn extends UIContainer {
     this.eventbus_.emit(Events.AUTOHIDE_CHANGE, {
       autohide: true
     });
+
+    // should hide the menu of setting at the same time
+    super.hideMenu();
   }
 
   removeAutohideAction() {
@@ -307,6 +317,10 @@ class UIVisualOn extends UIContainer {
 
     this.removeAutohideAction();
     this.flagTimerHideControlBar_ = setTimeout(() => {
+      //if menu is popup, the controlbar will not do auto hide.
+      if (this.flagMenuPopup_)
+        return;
+
       this.onPlayerMouseLeave();
       this.flagTimerHideControlBar_ = null;
     }, 3000);
@@ -349,6 +363,11 @@ class UIVisualOn extends UIContainer {
   onControlBarMouseMove(e) {
     e.stopPropagation();
     this.removeAutohideAction();
+  }
+
+  //get if the menu is popup
+  onPopupMenuChange(e) {
+    this.flagMenuPopup_ = (e.menu != 'none');
   }
 
   ////////////////////////////////////////////////////////////////////////////////////

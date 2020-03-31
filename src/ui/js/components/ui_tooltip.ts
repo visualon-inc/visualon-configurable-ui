@@ -2,6 +2,8 @@ import UIContainer from './ui_container';
 import Events from '../events';
 import DOM from '../dom';
 import UITools from '../ui_tools';
+const  maxPercentageThumbnail = 0.15,
+       maxScale = 2;
 
 class UIToolTip extends UIContainer {
   private onProgressBarMouseMove_: any;
@@ -53,28 +55,6 @@ class UIToolTip extends UIContainer {
     this.element_.appendChild(this.vopTooltipTextWrapper_);
   }
 
-  getTooltipOffsetX(progressInfo, currMovePos, tooltipWidth) {
-    // part - input
-    // bounding client rect can return the progress bar's rect relative to current page.
-    let rect = this.vopProgressBar_.getBoundingClientRect();
-    let leftMin = 12 + this.vopProgressBar_.offsetLeft;
-    let rightMax = leftMin + rect.width;
-
-    let currPosWidth = (currMovePos / progressInfo.duration) * rect.width;
-    let tooltipLeft_RelativeToVideo = leftMin + currPosWidth - tooltipWidth / 2;
-    let tooltipRight_RelativeToVideo = leftMin + currPosWidth + tooltipWidth / 2;
-
-    if (tooltipLeft_RelativeToVideo < leftMin) {
-      tooltipLeft_RelativeToVideo = leftMin;
-    } else if (tooltipRight_RelativeToVideo > rightMax) {
-      tooltipLeft_RelativeToVideo = rightMax - tooltipWidth;
-    }
-
-    //console.log('tooltipLeft_RelativeToVideo: ' + tooltipLeft_RelativeToVideo);
-
-    return tooltipLeft_RelativeToVideo;
-  }
-
   updateTooltipUI(show, currMovePos, progressInfo) {
     if (!show) {
       this.element_.style.display = 'none';
@@ -85,52 +65,82 @@ class UIToolTip extends UIContainer {
       this.vopProgressBar_ = this.context_.vopSkinContainer.querySelector('.vop-progress-bar');
     }
 
-    // update tooltip offset
-    let strTime = '';
-    if (progressInfo.live) {
-      currMovePos -= progressInfo.range.start;
-      strTime = UITools.TimeToString(progressInfo.duration - currMovePos);
-      if (strTime !== '00:00' && strTime !== '00:00:00') {
-        strTime = '-' + strTime;
-      }
-    } else {
-      strTime = UITools.TimeToString(currMovePos);
-    }
-    this.vopTooltipText_.innerText = strTime;
+    let vopPlayerContainer = this.context_.playerContainer;
+    let vopTooltipText = this.vopTooltipText_;
+    let vopTooltipContainer = this.element_;
+    let vopTooltipBg = this.vopTooltipBg_;
+    let vopProgressBar = this.vopProgressBar_;
+    let skinContainer = this.context_.vopSkinContainer;
 
-    // Don't show thumbnail if it's a live stream.
-    if (!progressInfo.live) {
-      let thumbnailInfo = this.player_.findNearestThumbnail(currMovePos);
-
-      if (thumbnailInfo) {
-        DOM.addClass(this.element_, 'vop-tooltip-preview');
-        //console.log('thumbnailInfo info: ', thumbnailInfo);
-        let isSprite = (thumbnailInfo.w && thumbnailInfo.h);
-        if (isSprite) {
-          this.vopTooltipBg_.style.width = thumbnailInfo.w.toString() + 'px';
-          this.vopTooltipBg_.style.height = thumbnailInfo.h.toString() + 'px';
-          this.vopTooltipBg_.style.background = 'url(' + thumbnailInfo.url + ')' +
-            ' -' + thumbnailInfo.x.toString() + 'px' +
-            ' -' + thumbnailInfo.y.toString() + 'px';
-        } else {
-          this.vopTooltipBg_.style.width = '158px';
-          this.vopTooltipBg_.style.height = '90px';
-          this.vopTooltipBg_.style.background = 'url(' + thumbnailInfo.url + ') no-repeat';
-          this.vopTooltipBg_.style.backgroundSize = '100% 100%';
+    this.player_.findNearestThumbnail(currMovePos, function (thumbnailInfo) {
+        if (skinContainer.className.indexOf('vop-autohide') !== -1) {
+          vopTooltipContainer.style.display = 'none';
+          return;
         }
-      } else {
-        DOM.removeClass(this.element_, 'vop-tooltip-preview');
-      }
-    }
+        let strTime = '';
+        if (progressInfo.live) {
+          currMovePos -= progressInfo.range.start;
+          strTime = UITools.TimeToString(progressInfo.duration - currMovePos);
+          if (strTime !== '00:00' && strTime !== '00:00:00') {
+            strTime = '-' + strTime;
+          }
+        } else {
+          strTime = UITools.TimeToString(currMovePos);
+        }
+        vopTooltipText.innerText = strTime;
 
-    // calculate metrics first
-    // A very large offset to hide tooltip.
-    this.element_.style.left = '10000px';
-    this.element_.style.display = 'block';
+        let thumbnailWidth = 0;
+        let playContainerRect = vopPlayerContainer.getBoundingClientRect();
 
-    // set the correct offset of tooltip.
-    let offsetX = this.getTooltipOffsetX(progressInfo, currMovePos, this.element_.clientWidth);
-    this.element_.style.left = offsetX.toString() + 'px';
+        if (thumbnailInfo) {
+          DOM.addClass(vopTooltipContainer, 'vop-tooltip-preview');
+          let isSprite = (thumbnailInfo.width && thumbnailInfo.height);
+          let maxHeight = playContainerRect.height * maxPercentageThumbnail;
+          let maxWidth = playContainerRect.width * maxPercentageThumbnail
+          if (isSprite) {
+            let scale = maxHeight/thumbnailInfo.height;
+            if (scale > maxScale) {
+                scale = maxScale;
+            }
+            vopTooltipBg.style.width = thumbnailInfo.width.toString() + 'px';
+            vopTooltipBg.style.height = thumbnailInfo.height.toString() + 'px';
+            vopTooltipBg.style.background = 'url(' + thumbnailInfo.url + ')' +
+              ' -' + thumbnailInfo.x.toString() + 'px' +
+              ' -' + thumbnailInfo.y.toString() + 'px';
+            vopTooltipBg.style.transform = 'scale(' + scale + ',' + scale + ')';
+            thumbnailWidth = thumbnailInfo.width * scale;
+          } else {
+            vopTooltipBg.style.width = maxWidth + 'px';
+            vopTooltipBg.style.height = maxHeight + 'px';
+            vopTooltipBg.style.background = 'url(' + thumbnailInfo.url + ') no-repeat';
+            vopTooltipBg.style.backgroundSize = '100% 100%';
+            thumbnailWidth = maxWidth;
+          }
+        } else {
+          DOM.removeClass(vopTooltipContainer, 'vop-tooltip-preview');
+        }
+
+        // calculate metrics first
+        // A very large offset to hide tooltip.
+        vopTooltipContainer.style.left = '10000px';
+        vopTooltipContainer.style.display = 'block';
+
+        // set the correct offset of tooltip.
+        let tooltipWidth = vopTooltipContainer.clientWidth;
+        let rect = vopProgressBar.getBoundingClientRect();
+        let left = rect.left - playContainerRect.left;
+        let currPosWidth = (currMovePos / progressInfo.duration) * rect.width;
+        let offsetX = left + currPosWidth - tooltipWidth / 2;
+
+        let leftMin = left + thumbnailWidth / 2 - tooltipWidth / 2;
+        let leftMax = left + rect.width - thumbnailWidth / 2 - tooltipWidth / 2;
+        if (offsetX < leftMin) {
+          offsetX = leftMin;
+        } else if (offsetX > leftMax) {
+          offsetX = leftMax;
+        }
+        vopTooltipContainer.style.left = offsetX.toString() + 'px';
+      });
   }
 
   onProgressBarMouseMove(e) {

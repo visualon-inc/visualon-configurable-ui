@@ -6,14 +6,10 @@ class UISubtitlesToggleButton extends UIButton {
   private onPlayerProgramChanged_: any;
   constructor(context) {
     super(context);
-    this.element_ = document.createElement('button');
-    this.element_.setAttribute('class', 'vop-button vop-subtitles-button');
+
+    this.initElement('vop-button vop-subtitles-button', 'Subtitles');
     this.element_.style.display = 'none';
-    this.element_.title = 'Subtitles';
     this.element_.setAttribute('data-id', ID.SUBTITLES_BUTTON);
-    this.element_.addEventListener('click', (e) => {
-      this.onHandleClick(e);
-    }, true);
 
     this.addPlayerListeners();
   }
@@ -37,7 +33,7 @@ class UISubtitlesToggleButton extends UIButton {
     }
   }
 
-  onHandleClick(e) {
+  onHandleClick() {
     this.eventbus_.emit(Events.SUBTITLE_BUTTON_CLICK);
   }
 
@@ -50,10 +46,6 @@ class UISubtitlesToggleButton extends UIButton {
     }
   }
 
-  onAdComplete() {
-    this.updateBtnState();
-  }
-
   onPlayerOpenFinished() {
     this.updateBtnState();
   }
@@ -61,6 +53,9 @@ class UISubtitlesToggleButton extends UIButton {
   onPlayerProgramChanged() {
     if(this.element_.style.display === 'none')
       this.onPlayerOpenFinished_();
+  }
+  
+  onMouseDown() {
   }
 }
 

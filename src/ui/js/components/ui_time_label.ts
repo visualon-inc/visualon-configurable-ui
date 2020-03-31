@@ -95,6 +95,8 @@ export class UITimeLabel extends UIContainer {
   }
 
   onUICmdLiveEdge() {
+    super.hideMenu();
+
     // seek to live point if click the 'live' button
     let info: any = UITools.getProgressInfo(this.player_);
     if (info.live && !this.isInLiveEdge(info)) {

@@ -25,11 +25,12 @@
   }
   .vop-tooltip-preview {
     padding: 2px;
-    background-color: rgba(28, 28, 28, 0.9);
     border-radius: 2px
   }
   .vop-tooltip-preview .vop-tooltip-bg {
     display: block;
+    box-shadow: 0px 0px 0.9em #000000;
+    transform-origin: center bottom;
   }
   .vop-tooltip-preview .vop-tooltip-text-wrapper {
     position: absolute;

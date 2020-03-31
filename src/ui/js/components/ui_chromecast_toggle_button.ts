@@ -8,10 +8,7 @@ class UIChromecastToggleButton extends UIButton {
   constructor(context) {
     super(context);
 
-    this.element_ = document.createElement('button');
-    this.element_.setAttribute('class', 'vop-button vop-cast-button');
-    this.element_.addEventListener('click', this.onUIComponentClick.bind(this));
-    this.element_.title = 'chromecast';
+    this.initElement('vop-button vop-cast-button', 'chromecast');
 
     this.addPlayerListeners();
     this.updateBtnState();
@@ -44,7 +41,7 @@ class UIChromecastToggleButton extends UIButton {
     }
   }
 
-  onUIComponentClick() {
+  onHandleClick() {
     this.player_.startCast();
   }
 
@@ -71,10 +68,6 @@ class UIChromecastToggleButton extends UIButton {
     } else {
       this.hide();
     }
-  }
-
-  onAdComplete() {
-    this.updateBtnState();
   }
 
   onPlayerOpenFinished() {

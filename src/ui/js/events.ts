@@ -4,6 +4,7 @@ const Events: any = {
   PROGRESSBAR_MOUSEMOVE: 'progressbar_mousemove',
   PROGRESSBAR_MOUSEENTER: 'progressbar_mouseenter',
   PROGRESSBAR_MOUSELEAVE: 'progressbar_mouseleave',
+  SEEK: 'seek',
 
   CONTROLBAR_MOUSEMOVE: 'controlbar_mousemove',
 

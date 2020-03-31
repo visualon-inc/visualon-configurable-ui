@@ -6,24 +6,30 @@ class UIPipToggleButton extends UIButton {
     super(context);
     this.pipMode_ = false;
 
-    this.element_ = document.createElement('div');
-    this.element_.setAttribute('class', 'vop-button vop-pip-button');
-    this.element_.addEventListener('click', this.onUICmdPip.bind(this));
-    this.element_.title = 'picture in picture';
+    this.initElement('vop-button vop-pip-button', 'picture in picture');
   }
 
   destroy() {
     super.destroy();
   }
 
-  onUICmdPip() {
+  onHandleClick() {
     this.pipMode_ = !this.player_.isInPipMode();
     this.player_.setPipPresentation(this.pipMode_);
   }
 
+  updateBtnState() {
+    // when in 360vr mode, pip will be hidden, 360vr only shows part of video
+    if (this.player_.isVRMode()) {
+      this.hide();
+    } else {
+      this.show();
+    }
+  }
+
   onPlayerOpenFinished() {
     this.flagAdBreakStart_ = false;
-    this.show();
+    this.updateBtnState();
   }
 }
 

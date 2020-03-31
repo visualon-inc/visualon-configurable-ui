@@ -1,3 +1,5 @@
+import Events from '../events';
+
 class UIComponent {
   protected context_: any;
   protected player_: any;
@@ -100,12 +102,16 @@ class UIComponent {
     if (!this.flagNonLinearAd_) {
       this.hide();
     } else {
-      this.show();
+      this.updateBtnState();
     }
   }
 
-  onAdComplete() {
+  updateBtnState() {
     this.show();
+  }
+
+  onAdComplete() {
+    this.updateBtnState();
   }
 
   onPlayerOpenFinished() {
@@ -121,6 +127,10 @@ class UIComponent {
 
   hide() {
     this.element_.style.display = 'none';
+  }
+
+  hideMenu() {
+    this.eventbus_.emit(Events.SETTING_BUTTON_CLICK, {forceHide: true});
   }
 }
 

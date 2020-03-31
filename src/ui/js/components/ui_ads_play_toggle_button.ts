@@ -7,19 +7,7 @@ class UIAdsPlayToggleButton extends UIButton {
   constructor(context) {
     super(context);
 
-    // ui properties
-    let properties = {
-      'className': 'vop-button vop-ads-play-toggle-button',
-      'title': 'play'
-    };
-
-    // create html element
-    this.element_ = DOM.createEl('button', properties);
-
-    // bind element events
-    this.element_.addEventListener('click', () => {
-      this.onHandleClick();
-    }, true);
+    this.initElement('vop-button vop-ads-play-toggle-button', 'play');
 
     this.addEventBusListeners();
   }
@@ -44,7 +32,6 @@ class UIAdsPlayToggleButton extends UIButton {
   onHandleClick() {
     // Get current play/pause state from UI.
     let currPaused = this.player_.isPaused();
-    let currEnded = this.player_.isEnded();
     let isTrickPlay = this.player_.getTrickPlayRate() != 1;
 
     if(isTrickPlay) {

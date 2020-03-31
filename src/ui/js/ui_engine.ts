@@ -1,6 +1,7 @@
 import UIVisualOn from './ui_visualon';
 import EventBus from './eventbus';
 import UIDebug from './debug';
+import Events from './events';
 
 class UIEngine {
   private context_: any;
@@ -19,6 +20,7 @@ class UIEngine {
     this.context_.debug = this.debug_ = new UIDebug();
     this.context_.player = this.player_ = player;
     this.context_.playerContainer = this.playerContainer_ = this.player_.getContainer();
+    this.context_.events = Events;
     this.debug_.log('+UIEngine, constructor');
   }
 

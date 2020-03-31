@@ -47,14 +47,9 @@ class UITvNoiseCanvas {
     }
 
     let currentPixelOffset;
-    let canvasWidth_ = this.canvasElement_.clientWidth;
-    let canvasHeight_ = this.canvasElement_.clientHeight;
+    let canvasWidth_ = this.canvasElement_.clientWidth || this.canvasElement_.width;
+    let canvasHeight_ = this.canvasElement_.clientHeight || this.canvasElement_.height;
     let noiseAnimationWindowPos_ = -canvasHeight_;
-
-    if (canvasWidth_ == 0) {
-        canvasWidth_ = document.getElementById('player-container').clientWidth;
-        canvasHeight_ = document.getElementById('player-container').clientHeight;
-    }
 
     // Create texture
     let noiseImage = this.canvasContext_.createImageData(canvasWidth_, canvasHeight_);

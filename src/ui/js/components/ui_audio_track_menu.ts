@@ -121,7 +121,10 @@ class UIAudioTrackMenu extends UIComponent {
       vopMenuitemLabel.setAttribute('class', 'vop-menuitem-label');
 
       let span = document.createElement('span');
-      span.innerText = audioTrack.lang;
+      span.innerText = audioTrack.lang ? audioTrack.lang : 'audio';
+      if (audioTrack.bandwidth) {
+        span.innerText += ', ' + Math.round(audioTrack.bandwidth / 1000) + ' kbps';
+      }
 
       vopMenuitemLabel.appendChild(span);
       vopMenuitem.appendChild(vopMenuitemLabel);

@@ -23,22 +23,14 @@ class UIHugeButtonOverlay extends UIContainer {
 
   addPlayerListeners() {
     super.addPlayerListeners();
-    this.onMediaPlay_ = this.onMediaPlay.bind(this);
-    this.onMediaPaused_ = this.onMediaPaused.bind(this);
     this.onMediaEnded_ = this.onMediaEnded.bind(this);
-    this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_STARTED, this.onMediaPlay_);
-    this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_PAUSED, this.onMediaPaused_);
     this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_COMPLETE, this.onMediaEnded_);
   }
 
   removePlayerListeners() {
     super.removePlayerListeners();
     if (this.player_) {
-      this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_STARTED, this.onMediaPlay_);
-      this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_PAUSED, this.onMediaPaused_);
       this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_COMPLETE, this.onMediaEnded_);
-      this.onMediaPlay_ = null;
-      this.onMediaPaused_ = null;
       this.onMediaEnded_ = null;
     }
   }
@@ -53,29 +45,8 @@ class UIHugeButtonOverlay extends UIContainer {
     this.element_.style.display = 'none';
   }
 
-  onMediaPlay() {
-    this.updateGiantPlayBtnUI(false);
-  }
-
-  onMediaPaused() {
-    this.updateGiantPlayBtnUI(true);
-  }
-
   onMediaEnded() {
     this.element_.style.display = 'none';
-  }
-
-  updateGiantPlayBtnUI(paused) {
-    if (this.vopHugeButton_) {
-      DOM.removeClass(this.vopHugeButton_, 'vop-style-play-giant');
-      DOM.removeClass(this.vopHugeButton_, 'vop-style-pause-giant');
-      if (paused) {
-        DOM.addClass(this.vopHugeButton_, 'vop-style-pause-giant');
-      } else {
-        DOM.addClass(this.vopHugeButton_, 'vop-style-play-giant');
-      }
-      this.element_.style.display = 'block';
-    }
   }
 }
 

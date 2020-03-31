@@ -6,14 +6,7 @@ class UIFullscreenToggleButton extends UIButton {
   constructor(context) {
     super(context, false);
 
-    let properties = {
-      'className': 'vop-button vop-fullscreen-button icon-on',
-      'title': 'fullscreen'
-    };
-    this.element_ = DOM.createEl('button', properties);
-    this.element_.addEventListener('click', (e) => {
-      this.onHandleClick(e);
-    }, true);
+    this.initElement('vop-button vop-fullscreen-button icon-on', 'fullscreen');
 
     this.addPlayerListeners();
   }
@@ -37,7 +30,7 @@ class UIFullscreenToggleButton extends UIButton {
     }
   }
 
-  onHandleClick(e) {
+  onHandleClick() {
     if (this.player_.isFullscreen()) {
       this.player_.exitFullscreen();
     } else {

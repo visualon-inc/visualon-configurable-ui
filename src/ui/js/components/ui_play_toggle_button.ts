@@ -7,19 +7,7 @@ class UIPlayToggleButton extends UIButton {
   constructor(context) {
     super(context);
 
-    // ui properties
-    let properties = {
-      'className': 'vop-button vop-play-button',
-      'title': 'play'
-    };
-
-    // create html element
-    this.element_ = DOM.createEl('button', properties);
-
-    // bind element events
-    this.element_.addEventListener('click', () => {
-      this.onHandleClick();
-    }, true);
+    this.initElement('vop-button vop-play-button', 'play');
 
     this.addEventBusListeners();
   }
@@ -42,6 +30,8 @@ class UIPlayToggleButton extends UIButton {
   }
 
   onHandleClick() {
+    super.hideMenu();
+
     // Get current play/pause state from UI.
     let currPaused = this.player_.isPaused();
     let currEnded = this.player_.isEnded();

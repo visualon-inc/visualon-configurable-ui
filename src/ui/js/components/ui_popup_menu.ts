@@ -125,7 +125,10 @@ class UIPopupMenu extends UIContainer {
 
   onSettingButtonClick(e) {
     let menu;
-    if (this.settingMenuUIData_.currMenu === 'subtitles_menu' ||
+    // if e.forceHide is true, means that should hide menu for other buttons are clicked.
+    if (e.forceHide == true) {
+        menu = 'none';
+    } else if (this.settingMenuUIData_.currMenu === 'subtitles_menu' ||
       this.settingMenuUIData_.currMenu === 'video_enhancement_menu') {
       menu = 'settings_menu';
     }

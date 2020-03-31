@@ -8,14 +8,11 @@ class UIVolumeToggleButton extends UIButton {
     super(context, false);
     this.vopVolumeBtnStyle_ = 'icon-up';
 
-    this.element_ = document.createElement('button');
-    this.element_.setAttribute('class', 'vop-button vop-volume-button');
-    this.element_.title = 'mute';
+    this.initElement('vop-button vop-volume-button', 'mute');
+
     this.vopVolumeBtnStyle_ = this.getNewVolumeBtnStyle();
     DOM.addClass(this.element_, this.vopVolumeBtnStyle_);
 
-    this.onUICmdVolume = this.onUICmdVolume.bind(this);
-    this.element_.addEventListener('click', this.onUICmdVolume);
     this.addPlayerListeners();
   }
 
@@ -67,7 +64,7 @@ class UIVolumeToggleButton extends UIButton {
     DOM.addClass(this.element_, this.vopVolumeBtnStyle_);
   }
 
-  onUICmdVolume() {
+  onHandleClick() {
     let muted = this.player_.isMuted();
     let volume = this.player_.getVolume();
 

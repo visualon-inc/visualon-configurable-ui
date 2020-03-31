@@ -59,6 +59,7 @@ class UIBufferingOverlay extends UIComponent {
     this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_WAITING, this.onMediaWaiting_);
     this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_PLAYING, this.onMediaPlaying_);
     this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_SRC_CB_CLOSED, this.onMediaClosed_);
+    this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_COMPLETE, this.onMediaClosed_);
   }
 
   removePlayerListeners() {
@@ -66,6 +67,7 @@ class UIBufferingOverlay extends UIComponent {
     this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_WAITING, this.onMediaWaiting_);
     this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_PLAYING, this.onMediaPlaying_);
     this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_SRC_CB_CLOSED, this.onMediaClosed_);
+    this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_COMPLETE, this.onMediaClosed_);
     this.onMediaPlaying_ = null;
     this.onMediaWaiting_ = null;
     this.onMediaClosed_ = null;

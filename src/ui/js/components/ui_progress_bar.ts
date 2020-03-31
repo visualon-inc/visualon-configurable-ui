@@ -138,9 +138,6 @@ class UIProgressBar extends UIComponent {
 
   onMediaSeeked() {
     if (this.isSeekStart_ && this.progressBarContext_) {
-      if (!this.progressBarContext_.pausedBeforeMousedown || this.progressBarContext_.endedBeforeMousedown) {
-        this.player_.play();
-      }
       this.isSeekStart_ = false;
       this.progressBarContext_ = null;
     }
@@ -173,6 +170,8 @@ class UIProgressBar extends UIComponent {
   }
 
   onProgressBarMouseDown(e) {
+    super.hideMenu();
+
     e.preventDefault();
     e.stopPropagation();
 
@@ -183,7 +182,6 @@ class UIProgressBar extends UIComponent {
     this.captureProgressBarMouseEvents();
 
     this.progressBarContext_ = {};
-    this.progressBarContext_.pausedBeforeMousedown = this.player_.isPaused();
     this.progressBarContext_.endedBeforeMousedown = this.player_.isEnded();
     this.progressBarContext_.posBeforeMousedown = this.player_.getPosition();
     this.flagThumbnailMode_ = false;
@@ -311,6 +309,7 @@ class UIProgressBar extends UIComponent {
     // player seeking
     if (this.progressBarContext_ && this.progressBarContext_.posBeforeMousedown != this.progressBarContext_.movePos) {
       this.isSeekStart_ = true;
+      this.eventbus_.emit(Events.SEEK, {pos: this.progressBarContext_.movePos});
       this.player_.setPosition(this.progressBarContext_.movePos);
     } else {
       this.progressBarContext_ = null;
@@ -319,11 +318,6 @@ class UIProgressBar extends UIComponent {
 
   doEnterThumbnailMode() {
     if (!this.flagThumbnailMode_) {
-      // need to pause content first before starting a seek operation.
-      if (this.progressBarContext_ && !this.progressBarContext_.pausedBeforeMousedown) {
-        this.player_.pause();
-      }
-
       if (this.progressBarContext_)
         this.progressBarContext_.timer = null;
       this.flagThumbnailMode_ = true;
