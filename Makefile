@@ -38,6 +38,6 @@ release : checkPackage
 
 release_ui: checkPackage
 	@echo "+build ui in Makefile"
-	node ./node_modules/webpack/bin/webpack.js --config webpack.config.js --devtool source-map --mode production --tempPluginDir ${tempPluginDir}
+	node ./node_modules/webpack/bin/webpack.js --config webpack.config.js --devtool none --mode production --tempPluginDir ${tempPluginDir}
 	@echo "-build ui in Makefile"
 

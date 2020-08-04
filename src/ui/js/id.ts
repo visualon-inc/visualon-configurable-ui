@@ -8,7 +8,8 @@ const ID: any = {
   MENUITEM_QUALITY: '1',
   MENUITEM_AUDIO_TRACK: '2',
   MENUITEM_FCC: '3',
-  MENUITEM_XSPEED: '4'
+  MENUITEM_XSPEED: '4',
+  MENUITEM_ASPECT_RATIO: '5'
 };
 
 export default ID;

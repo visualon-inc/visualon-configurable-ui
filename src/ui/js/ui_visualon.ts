@@ -77,11 +77,11 @@ class UISkinVisualOn extends UIContainer {
 
     uiControlBar.addComponent(new UISubtitlesToggleButton(this.context_));
 
-    if (this.player_.isVideoEnhanceSupported()) {
+    if (this.player_.VideoEnhance && this.player_.VideoEnhance.isVideoEnhanceSupported()) {
       uiControlBar.addComponent(new UIVideoEnhancementToggleButton(this.context_));
     }
 
-    if (this.player_.isVRSupported()) {
+    if (this.player_.VR && this.player_.VR.isVRSupported()) {
         uiControlBar.addComponent(new UICardBoardToggleButton(this.context_));
     }
 
@@ -132,7 +132,10 @@ class UIVisualOn extends UIContainer {
   private onPlayerSourceClosed_: Function;
   private onMediaEnded_: Function;
   private onMediaPaused_: Function;
+  private onMediaOpenStarted_: Function;
   private onMediaPlaying_: Function;
+  private onMediaWaiting_: Function;
+  private onMediaCanPlay_: Function;
   private onFullscreenChanged_: any;
 
   // ui events
@@ -224,12 +227,18 @@ class UIVisualOn extends UIContainer {
     this.onPlayerSourceClosed_ = this.onPlayerSourceClosed.bind(this);
     this.onMediaEnded_ = this.onMediaEnded.bind(this);
     this.onMediaPaused_ = this.onMediaPaused.bind(this);
+    this.onMediaOpenStarted_ = this.onMediaOpenStarted.bind(this);
     this.onMediaPlaying_ = this.onMediaPlaying.bind(this);
+    this.onMediaWaiting_ = this.onMediaWaiting.bind(this);
+    this.onMediaCanPlay_ = this.onMediaCanPlay.bind(this);
     this.onFullscreenChanged_ = this.onFullscreenChanged.bind(this);
     this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_SRC_CB_CLOSED, this.onPlayerSourceClosed_);
     this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_COMPLETE, this.onMediaEnded_);
+    this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_SRC_CB_OPEN, this.onMediaOpenStarted_);
     this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_PLAYING, this.onMediaPlaying_);
     this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_PAUSED, this.onMediaPaused_);
+    this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_WAITING, this.onMediaWaiting_);
+    this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_CANPLAY, this.onMediaCanPlay_);
     this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_FULLSCREEN_CHANGE, this.onFullscreenChanged_);
   }
 
@@ -237,13 +246,19 @@ class UIVisualOn extends UIContainer {
     // content playback events
     this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_SRC_CB_CLOSED, this.onPlayerSourceClosed_);
     this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_COMPLETE, this.onMediaEnded_);
+    this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_SRC_CB_OPEN, this.onMediaOpenStarted_);
     this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_PLAYING, this.onMediaPlaying_);
     this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_PAUSED, this.onMediaPaused_);
+    this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_WAITING, this.onMediaWaiting_);
+    this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_CANPLAY, this.onMediaCanPlay_);
     this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_FULLSCREEN_CHANGE, this.onFullscreenChanged_);
     this.onPlayerSourceClosed_ = null;
     this.onMediaEnded_ = null;
+    this.onMediaOpenStarted_ = null;
     this.onMediaPaused_ = null;
     this.onMediaPlaying_ = null;
+    this.onMediaWaiting_ = null;
+    this.onMediaCanPlay_ = null;
     this.onFullscreenChanged_ = null;
   }
 
@@ -259,12 +274,6 @@ class UIVisualOn extends UIContainer {
 
     // Update all child components.
     this.playerState_ = state;
-
-    if (this.playerState_ === 'opening') {
-      DOM.addClass(this.vopSkinContainer_, 'vop-buffering');
-    } else if (this.playerState_ === 'opened') {
-      DOM.removeClass(this.vopSkinContainer_, 'vop-buffering');
-    }
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -321,28 +330,40 @@ class UIVisualOn extends UIContainer {
       if (this.flagMenuPopup_)
         return;
 
-      this.onPlayerMouseLeave();
+      this.onPlayerMouseLeave(null);
       this.flagTimerHideControlBar_ = null;
     }, 3000);
   }
 
-  onPlayerMouseLeave() {
-    if (this.playerState_ !== 'playing') {
-      return;
+  isMouseInVideoArea(e){
+    if (!e) {
+      return false;
     }
 
-    let paused = this.player_.isPaused();
-    if (!paused) {
-      this.addAutohideAction();
+    let x=e.clientX;
+    let y=e.clientY;
+    let divx1 = this.vopSkinContainer_.getBoundingClientRect().left + 10;
+    let divy1 = this.vopSkinContainer_.getBoundingClientRect().top + 10;
+    let divx2 = this.vopSkinContainer_.getBoundingClientRect().right - 10;
+    let divy2 = this.vopSkinContainer_.getBoundingClientRect().bottom - 10;
+    if( x < divx1 || x > divx2 || y < divy1 || y > divy2){
+      return false;
+    }
+
+    return true;
+  }
+
+  onPlayerMouseLeave(e) {
+    if (this.playerState_ !== 'playing') {
+      return;
+    }else {
+      if (!this.isMouseInVideoArea(e)) {
+        this.addAutohideAction();
+      }
     }
   }
 
   onPlayerMouseDown(e) {
-    // If playerState_ is 'opened', let ui_play_overlay components handle play action.
-    if (this.playerState_ === 'opened') {
-      return;
-    }
-
     this.flagShouldTogglePlay_ = true;
     this.flagTouchMoveCount_ = 0;
   }
@@ -372,14 +393,6 @@ class UIVisualOn extends UIContainer {
 
   ////////////////////////////////////////////////////////////////////////////////////
   // player events callback
-  onOmOpening() {
-    this.updateUIStateMachine('opening');
-  }
-
-  onPlayerOpenFinished() {
-    this.updateUIStateMachine('opened');
-  }
-
   onPlayerSourceClosed() {
     this.updateUIStateMachine('idle');
   }
@@ -388,18 +401,39 @@ class UIVisualOn extends UIContainer {
     this.removeAutohideAction();
     this.updateUIStateMachine('ended');
   }
+  
+  onMediaOpenStarted() {
+    this.updateUIStateMachine('opening');
+  }
 
   onMediaPlaying() {
     this.updateUIStateMachine('playing');
-
     this.showUIForWhile();
   }
-
+  
+  onMediaWaiting() {
+    if (this.player_.isPaused()) {
+        this.updateUIStateMachine('buffering_paused');
+    }else {
+        this.updateUIStateMachine('buffering');
+    }
+  }
+  
+  onMediaCanPlay() {
+    if (this.player_.isPaused()) {
+        this.updateUIStateMachine('paused');
+    }
+  }
+  
   onMediaPaused() {
     if (this.player_.isEnded()) {
       this.updateUIStateMachine('ended');
     } else {
-      this.updateUIStateMachine('paused');
+      if (this.playerState_ === 'buffering' || this.playerState_ === 'buffering_paused') {
+        this.updateUIStateMachine('buffering_paused');
+      }else {
+        this.updateUIStateMachine('paused');
+      }
     }
     // when paused, show the control bar
     this.removeAutohideAction();

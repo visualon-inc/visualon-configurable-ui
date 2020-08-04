@@ -9,6 +9,7 @@ class UIQualityMenu extends UIComponent {
   private onMenuItemClick_: any;
   private vopPanelMenu_: HTMLElement;
   private onPopupMenuChange_: any;
+  private onPlayerProgramChanged_: Function;
   constructor(context) {
     super(context, false);
 
@@ -44,11 +45,15 @@ class UIQualityMenu extends UIComponent {
   addEventBusListeners() {
     this.onPopupMenuChange_ = this.onPopupMenuChange.bind(this);
     this.eventbus_.on(Events.POPUPMENU_CHANGE, this.onPopupMenuChange_);
+    this.onPlayerProgramChanged_ = this.onPlayerProgramChanged.bind(this);
+    this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_SRC_CB_PROGRAM_CHANGED, this.onPlayerProgramChanged_);
   }
   
   removeEventBusListeners() {
     this.eventbus_.off(Events.POPUPMENU_CHANGE, this.onPopupMenuChange_);
     this.onPopupMenuChange_ = null;
+    this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_SRC_CB_PROGRAM_CHANGED, this.onPlayerProgramChanged_);
+    this.onPlayerProgramChanged_ = null;
   }
 
   onMenuBackClick(e) {
@@ -87,6 +92,10 @@ class UIQualityMenu extends UIComponent {
     }
   }
 
+  onPlayerProgramChanged() {
+    this.onPlayerOpenFinished();
+  }
+
   onPlayerOpenFinished() {
     // clear previous ui components
     DOM.removeAllChild(this.vopPanelMenu_);
@@ -97,6 +106,12 @@ class UIQualityMenu extends UIComponent {
     }
 
     let currQualityLevelId = AUTO_LEVEL_ID;
+    for (let i = 0; i < qualityLevels.length; i ++) {
+      if (qualityLevels[i].selInfo&(window as any).voPlayer.Enumerations.VO_TRACK_SELECTINFO.TRACK_SELECTED) {
+        currQualityLevelId = qualityLevels[i].id;
+        break;
+      }
+    }
 
     let autoLevel = {
       id: AUTO_LEVEL_ID
@@ -133,6 +148,10 @@ class UIQualityMenu extends UIComponent {
     vopMenuitem.setAttribute('data-id', level.id);
     vopMenuitem.addEventListener('click', this.onMenuItemClick_);
     vopMenuitem.setAttribute('tabIndex', '0');
+    if ((level.id !== AUTO_LEVEL_ID) && (level.selInfo&(window as any).voPlayer.Enumerations.VO_TRACK_SELECTINFO.TRACK_DISABLED)) {
+      vopMenuitem.style.pointerEvents = "none";
+      vopMenuitem.style.color = "gray";
+    }
 
     let vopMenuitemLabel = document.createElement('vop-menuitem-label');
     vopMenuitemLabel.setAttribute('class', 'vop-menuitem-label');

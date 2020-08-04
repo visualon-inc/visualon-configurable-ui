@@ -22,12 +22,16 @@ UITools.genGradientColor = function(posList, colorList) {
   return 'linear-gradient(' + gradient.join(',') + ')';
 };
 
-//
 UITools.getProgressInfo = function(player) {
   let position = player.getPosition();
   let duration = player.getDuration();
   let live = player.isLive();
   let range = player.getSeekableRange();
+  let videoBufferLength = player.getValidBufferDuration('video');
+  let audioBufferLength = player.getValidBufferDuration('audio');
+  let validBufferLength = Math.min(
+      !isNaN(videoBufferLength) ? videoBufferLength : Number.MAX_VALUE,
+      !isNaN(audioBufferLength) ? audioBufferLength : Number.MAX_VALUE);
 
   if (live) {
     position = position - range.start;
@@ -42,13 +46,12 @@ UITools.getProgressInfo = function(player) {
     position: position,
     duration: duration,
     live: live,
-    range: range
+    range: range,
+    validBufferLength: validBufferLength
   };
 
   return info;
 };
-
-
 
 function formatTime(time) {
   return time < 10 ? '0' + time.toString() : time.toString();

@@ -24,7 +24,7 @@ class UIAudioTrackMenu extends UIComponent {
     let vopPanelTitle = document.createElement('button');
     vopPanelTitle.setAttribute('class', 'vop-panel-title');
     vopPanelTitle.addEventListener('click', this.onMenuBackClick_);
-    vopPanelTitle.innerText = 'AudioTrack';
+    vopPanelTitle.innerText = 'Language';
 
     this.vopPanelMenu_ = document.createElement('div');
     this.vopPanelMenu_.setAttribute('class', 'vop-panel-menu');
@@ -53,12 +53,6 @@ class UIAudioTrackMenu extends UIComponent {
     super.removePlayerListeners();
     this.eventbus_.off(Events.POPUPMENU_CHANGE, this.onPopupMenuChange_);
     this.onPopupMenuChange_ = null;
-  }
-
-  addPlayerListeners() {
-  }
-
-  removePlayerListeners() {
   }
 
   onMenuBackClick(e) {

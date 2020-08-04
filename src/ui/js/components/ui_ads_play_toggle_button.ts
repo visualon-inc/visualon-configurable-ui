@@ -7,7 +7,7 @@ class UIAdsPlayToggleButton extends UIButton {
   constructor(context) {
     super(context);
 
-    this.initElement('vop-button vop-ads-play-toggle-button', 'play');
+    this.initElement('vop-ads-play-toggle-button', 'play');
 
     this.addEventBusListeners();
   }
@@ -48,7 +48,10 @@ class UIAdsPlayToggleButton extends UIButton {
     if (newPaused) {
       this.player_.pause();
     } else {
-      this.player_.play();
+      let result = this.player_.play();
+      if (result && (typeof Promise !== 'undefined') && (result instanceof Promise)) {
+        result.then(function(){console.log('play successfully')}).catch(function(error){console.log(error)});
+      }
     }
   }
 

@@ -23,7 +23,7 @@ cfg_ = {
 
 sourceCfg_ = {
   links: [{
-    uri: 'https://vm2.dashif.org/dash/vod/testpic_2s/multi_subs.mpd',
+    uri: 'https://livesim.dashif.org/dash/vod/testpic_2s/multi_subs.mpd',
     type: 'dash'
   }]
 };

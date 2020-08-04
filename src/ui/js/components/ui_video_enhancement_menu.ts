@@ -72,7 +72,7 @@ class UIVideoEnhancementMenu extends UIComponent {
       e.stopPropagation();
 
       this.enhanceLevelData_.currLevelValue = e.currentTarget.dataset.value;
-      this.player_.setLowBacklightEnhanceLevel(parseFloat(this.enhanceLevelData_.currLevelValue)*100);
+      this.player_.VideoEnhance.setLowBacklightEnhanceLevel(parseFloat(this.enhanceLevelData_.currLevelValue)*100);
   }
 
   onPopupMenuChange(e) {

@@ -6,7 +6,7 @@ class UICardBoardToggleButton extends UIButton {
     super(context);
     this.cardBoardMode_ = false;
 
-    this.initElement('vop-button vop-cardboard-button');
+    this.initElement('vop-cardboard-button');
   }
 
   destroy() {
@@ -15,11 +15,13 @@ class UICardBoardToggleButton extends UIButton {
 
   onHandleClick() {
     this.cardBoardMode_ = !this.cardBoardMode_;
-    this.player_.enableCardBoardMode(this.cardBoardMode_);
+    if (this.player_.VR) {
+      this.player_.VR.enableCardBoardMode(this.cardBoardMode_);
+    }
   }
 
   updateBtnState() {
-    if (this.player_.isVRMode()) {
+    if (this.player_.VR && this.player_.VR.isVRMode()) {
       this.show();
     } else {
       this.hide();

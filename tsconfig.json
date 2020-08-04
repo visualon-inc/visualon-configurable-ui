@@ -3,6 +3,7 @@
     "module": "commonjs",
     "outDir": "./built",
     "target": "es5",
+    "lib": ["es5", "es2015", "dom", "scripthost"],
     "allowJs": true,
     "sourceMap": true
   },

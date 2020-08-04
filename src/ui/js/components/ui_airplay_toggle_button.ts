@@ -4,7 +4,7 @@ class UIAirplayToggleButton extends UIButton {
   constructor(context) {
     super(context);
 
-    this.initElement('vop-button vop-airplay-button', 'airplay');
+    this.initElement('vop-airplay-button', 'airplay');
   }
 
   destroy() {

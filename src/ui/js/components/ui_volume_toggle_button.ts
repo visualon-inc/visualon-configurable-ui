@@ -8,7 +8,7 @@ class UIVolumeToggleButton extends UIButton {
     super(context, false);
     this.vopVolumeBtnStyle_ = 'icon-up';
 
-    this.initElement('vop-button vop-volume-button', 'mute');
+    this.initElement('vop-volume-button', 'mute');
 
     this.vopVolumeBtnStyle_ = this.getNewVolumeBtnStyle();
     DOM.addClass(this.element_, this.vopVolumeBtnStyle_);

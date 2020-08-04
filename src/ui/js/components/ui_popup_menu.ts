@@ -8,6 +8,7 @@ import UIFccMenu from './ui_fcc_menu';
 import UIFccPropertyMenu from './ui_fcc_property_menu';
 import UIXSpeedMenu from './ui_xspeed_menu';
 import UIVideoEnhancementMenu from './ui_video_enhancement_menu';
+import UIAspectRatioMenu from './ui_aspect_ratio_menu';
 
 class SettingMenuData {
   currMenu: string;
@@ -107,6 +108,7 @@ class UIPopupMenu extends UIContainer {
     this.components_.push(new UIFccPropertyMenu(this.context_));
     this.components_.push(new UIXSpeedMenu(this.context_));
     this.components_.push(new UIVideoEnhancementMenu(this.context_));
+    this.components_.push(new UIAspectRatioMenu(this.context_));
     for (let i = 0; i < this.components_.length; i ++) {
       let component = this.components_[i];
       vopPanel.appendChild(component.getElement());

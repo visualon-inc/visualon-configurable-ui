@@ -182,9 +182,12 @@
   }
 }
 
-.vop-buffering .vop-spinner {
+.vop-player-buffering_paused .vop-spinner,
+.vop-player-buffering .vop-spinner,
+.vop-player-opening .vop-spinner {
   display: block;
 }
+
 
 
 

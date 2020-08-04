@@ -7,7 +7,7 @@ class UISubtitlesToggleButton extends UIButton {
   constructor(context) {
     super(context);
 
-    this.initElement('vop-button vop-subtitles-button', 'Subtitles');
+    this.initElement('vop-subtitles-button', 'Subtitles');
     this.element_.style.display = 'none';
     this.element_.setAttribute('data-id', ID.SUBTITLES_BUTTON);
 

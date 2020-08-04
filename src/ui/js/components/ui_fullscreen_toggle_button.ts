@@ -6,7 +6,7 @@ class UIFullscreenToggleButton extends UIButton {
   constructor(context) {
     super(context, false);
 
-    this.initElement('vop-button vop-fullscreen-button icon-on', 'fullscreen');
+    this.initElement('vop-fullscreen-button icon-on', 'fullscreen');
 
     this.addPlayerListeners();
   }

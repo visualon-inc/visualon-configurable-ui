@@ -20,14 +20,7 @@
   }
 }
 
-.vop-player-opened .vop-play-overlay-container {
-  display: block;
-}
-
-.vop-player-paused .vop-play-overlay-container {
-  display: block;
-}
-
+.vop-player-paused .vop-play-overlay-container,
 .vop-player-ended .vop-play-overlay-container {
   display: block;
 }

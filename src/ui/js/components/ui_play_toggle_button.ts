@@ -7,7 +7,7 @@ class UIPlayToggleButton extends UIButton {
   constructor(context) {
     super(context);
 
-    this.initElement('vop-button vop-play-button', 'play');
+    this.initElement('vop-play-button', 'play');
 
     this.addEventBusListeners();
   }
@@ -58,19 +58,15 @@ class UIPlayToggleButton extends UIButton {
     if (newPaused) {
       this.player_.pause();
     } else {
-      this.player_.play();
+      let result = this.player_.play();
+      if (result && (typeof Promise !== 'undefined') && (result instanceof Promise)) {
+        result.then(function(){console.log('play successfully')}).catch(function(error){console.log(error)});
+      }
     }
   }
 
   onPlayButtonClick() {
-    if (this.flagAdBreakStart_) {
-      if (this.dataAdClient_ === 'awsmediatailor') {
-      } else if (this.dataAdClient_ === 'googleima') {
-        if (this.flagNonLinearAd_) {
-          this.onHandleClick();
-        }
-      }
-    } else {
+    if (!this.flagAdBreakStart_)  {
       this.onHandleClick();
     }
   }

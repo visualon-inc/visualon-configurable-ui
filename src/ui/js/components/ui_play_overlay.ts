@@ -13,12 +13,16 @@ class UIPlayOverlay extends UIContainer {
   initChildren() {
     this.vopPlayOverlay_ = document.createElement('div');
     this.vopPlayOverlay_.setAttribute('class', 'vop-play-overlay');
-    this.vopPlayOverlay_.addEventListener('click', this.onPlayOverlayClick.bind(this));
+    this.vopPlayOverlay_.addEventListener('mouseup', this.onPlayOverlayClick.bind(this));
     this.element_.appendChild(this.vopPlayOverlay_);
   }
 
-  onPlayOverlayClick() {
-    this.player_.play();
+  onPlayOverlayClick(e) {
+    e.stopPropagation()
+    let result = this.player_.play();
+    if (result && (typeof Promise !== 'undefined') && (result instanceof Promise)) {
+      result.then(function(){console.log('play successfully')}).catch(function(error){console.log(error)});
+    }
   }
 }
 

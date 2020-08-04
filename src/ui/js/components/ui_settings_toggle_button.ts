@@ -1,25 +1,25 @@
-import UIComponent from './ui_component';
+import UIButton from './ui_button';
 import Events from '../events';
 import ID from '../id';
 
-class UISettingsToggleButton extends UIComponent {
+class UISettingsToggleButton extends UIButton {
   constructor(context) {
     super(context);
-    this.element_ = document.createElement('button');
-    this.element_.setAttribute('class', 'vop-button vop-settings-button');
+
+    this.initElement('vop-settings-button', 'settings');
+
     this.element_.setAttribute('data-id', ID.SETTINGS_BUTTON);
-    this.element_.title = 'settings';
-    this.element_.addEventListener('click', (e) => {
-      this.onHandleClick(e);
-    }, true);
   }
 
   destroy() {
     super.destroy();
   }
 
-  onHandleClick(e) {
+  onHandleClick() {
     this.eventbus_.emit(Events.SETTING_BUTTON_CLICK);
+  }
+
+  onMouseDown() {
   }
 
   onPlayerOpenFinished() {

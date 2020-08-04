@@ -71,6 +71,10 @@ class UISettingsMenu extends UIComponent {
         break;
       case ID.MENUITEM_XSPEED:
         menu = 'xspeed_menu';
+        break;
+      case ID.MENUITEM_ASPECT_RATIO:
+        menu = 'aspect_ratio_menu';
+        break;
       default:
         break;
     }
@@ -108,7 +112,7 @@ class UISettingsMenu extends UIComponent {
     if (audioTracks.length > 1) {
       settingsListData.push({
         id: ID.MENUITEM_AUDIO_TRACK,
-        text: 'Language'
+        text: 'AudioTrack'
       });
     }
     let subtitleTracks = this.player_.getSubtitleTracks();
@@ -122,6 +126,12 @@ class UISettingsMenu extends UIComponent {
       id: ID.MENUITEM_XSPEED,
       text: 'Speed'
     });
+    if (this.uaInfo_.browser != 'ie') {
+      settingsListData.push({
+        id: ID.MENUITEM_ASPECT_RATIO,
+        text: 'Aspect Ratio'
+      });
+    }
 
     for (let i = 0; i < settingsListData.length; i ++) {
       let item = settingsListData[i];

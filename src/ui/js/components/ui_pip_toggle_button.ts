@@ -6,7 +6,7 @@ class UIPipToggleButton extends UIButton {
     super(context);
     this.pipMode_ = false;
 
-    this.initElement('vop-button vop-pip-button', 'picture in picture');
+    this.initElement('vop-pip-button', 'picture in picture');
   }
 
   destroy() {
@@ -20,7 +20,7 @@ class UIPipToggleButton extends UIButton {
 
   updateBtnState() {
     // when in 360vr mode, pip will be hidden, 360vr only shows part of video
-    if (this.player_.isVRMode()) {
+    if (this.player_.VR && this.player_.VR.isVRMode()) {
       this.hide();
     } else {
       this.show();

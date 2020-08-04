@@ -7,7 +7,7 @@ class UIFastRewindToggleButton extends UIButton {
     super(context);
     this.trickPlayRate_ = 1;
 
-    this.initElement('vop-button vop-fast-rewind-button', 'FR/-1X');
+    this.initElement('vop-fast-rewind-button', 'FR/-1X');
 
     this.addPlayerListeners();
   }
@@ -36,8 +36,12 @@ class UIFastRewindToggleButton extends UIButton {
     -1 : this.trickPlayRate_ * 2;
     this.player_.setTrickPlayRate(this.trickPlayRate_);
 
-    if (this.player_.isPaused())
-      this.player_.play();
+    if (this.player_.isPaused()){
+      let result = this.player_.play();
+      if (result && (typeof Promise !== 'undefined') && (result instanceof Promise)) {
+        result.then(function(){console.log('play successfully')}).catch(function(error){console.log(error)});
+      }
+    }
   }
 
   onPlayerOpenFinished() {

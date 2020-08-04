@@ -98,6 +98,8 @@ function UAParser() {
       info.isWebApp = false;
     }
 
+    info.isAndroid = navigator.userAgent.indexOf('Android') > -1 || navigator.userAgent.indexOf('Adr') > -1;
+    info.isIOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
     return info;
 };

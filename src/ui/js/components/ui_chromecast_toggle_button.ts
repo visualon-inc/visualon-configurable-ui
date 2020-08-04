@@ -8,7 +8,7 @@ class UIChromecastToggleButton extends UIButton {
   constructor(context) {
     super(context);
 
-    this.initElement('vop-button vop-cast-button', 'chromecast');
+    this.initElement('vop-cast-button', 'chromecast');
 
     this.addPlayerListeners();
     this.updateBtnState();

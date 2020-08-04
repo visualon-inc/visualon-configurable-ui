@@ -4,6 +4,7 @@ import UITvNoiseCanvas from './ui_tvnoise_canvas';
 class UIErrorMsgOverlay extends UIComponent {
   private onClosed_: any;
   private onError_: any;
+  private onHdcpPolicy_: any;
   private vopTvNoiseCanvas_: any;
   private vopErrorMsgText_: any;
   private tvNoiseCanvas_: any;
@@ -22,28 +23,40 @@ class UIErrorMsgOverlay extends UIComponent {
     this.element_.appendChild(this.vopErrorMsgText_);
 
     this.tvNoiseCanvas_ = new UITvNoiseCanvas({ element: this.vopTvNoiseCanvas_, parent: this.element_ });
-    this.addPlayerListeners();
+    this.addEventListeners();
   }
 
   destroy() {
     super.destroy();
-    this.removePlayerListeners();
+    this.removeEventListeners();
   }
 
-  addPlayerListeners() {
-    super.addPlayerListeners();
+  addEventListeners() {
+    // super.addPlayerListeners();//has added in super()
     this.onClosed_ = this.onClosed.bind(this);
     this.onError_ = this.onError.bind(this);
+    this.onHdcpPolicy_ = this.onHdcpPolicy.bind(this);
     this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_SRC_CB_CLOSED, this.onClosed_);
     this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_ERROR_EVENTS, this.onError_);
+    this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_HDCP_POLICY, this.onHdcpPolicy_);
   }
 
-  removePlayerListeners() {
+  removeEventListeners() {
     super.removePlayerListeners();
     this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_SRC_CB_CLOSED, this.onClosed_);
     this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_ERROR_EVENTS, this.onError_);
+    this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_HDCP_POLICY, this.onHdcpPolicy_);
     this.onClosed_ = null;
     this.onError_ = null;
+  }
+  onHdcpPolicy(payload) {
+    if (payload) {
+      if (payload.restricted === true) {
+        this.startNoiseCanvas('<p style="font-size:2em">HDCP POLICY: DRM content is restricted on this machine!</p>');
+      }else if (payload.restricted === false) {
+        this.reset();
+      }
+    }
   }
 
   onPlayerOpenFinished() {
@@ -80,6 +93,7 @@ class UIErrorMsgOverlay extends UIComponent {
       case (window as any).voPlayer.errorCode.VO_OSMP_DRM_ERR_LICENSE_REQUEST_FAIL:
       case (window as any).voPlayer.errorCode.VO_OSMP_DRM_ERR_SELECT_KEY_SYSTEM_FAIL:
       case (window as any).voPlayer.errorCode.VO_OSMP_SRC_ERR_SOURCE_BUFFER_ERROR:
+      case (window as any).voPlayer.errorCode.VO_OSMP_DRM_ERR_HDCP_RESTRICTED:
         break;
       default:
         return;
@@ -88,7 +102,11 @@ class UIErrorMsgOverlay extends UIComponent {
 
     var errId = 'ERROR: ' + errCode;
     var errMsg = e.message;
-    this.vopErrorMsgText_.innerHTML = '<strong>' + errId + '<\/strong>' + '<br\/>' + errMsg;
+    this.startNoiseCanvas('<strong>' + errId + '<\/strong>' + '<br\/>' + errMsg);
+  }
+  
+  startNoiseCanvas(errMsg) {
+    this.vopErrorMsgText_.innerHTML = errMsg;
     this.element_.style.display = 'block';
     this.tvNoiseCanvas_.start();
     // not use Animation on smart TV

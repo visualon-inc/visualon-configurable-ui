@@ -24,6 +24,7 @@ class UIProgressBar extends UIComponent {
   private vopScrubberContainer_: HTMLElement;
 
   private onMediaTimeupdated_: any;
+  private onMediaProgress_: any;
   private onMediaSeeked_: any;
   private onFullScreenChange_: any;
 
@@ -31,6 +32,7 @@ class UIProgressBar extends UIComponent {
   private startEvent_: string;
   private moveEvent_: string;
   private endEvent_: string;
+  private progressInfo_: ProgressInfo;
   constructor(context) {
     super(context);
     // flags reference variable of progress bar
@@ -40,6 +42,7 @@ class UIProgressBar extends UIComponent {
     };
     this.flagThumbnailMode_ = false;
     this.isSeekStart_ = false;
+    this.progressInfo_ = ProgressInfoObj;
 
     this.supportsTouches_ = ('createTouch' in document);
     this.startEvent_ = this.supportsTouches_ ? 'touchstart' : 'mousedown';
@@ -74,9 +77,11 @@ class UIProgressBar extends UIComponent {
   addPlayerListeners() {
     super.addPlayerListeners();
     this.onMediaTimeupdated_ = this.onMediaTimeupdated.bind(this);
+    this.onMediaProgress_ = this.onMediaProgress.bind(this);
     this.onMediaSeeked_ = this.onMediaSeeked.bind(this);
     this.onFullScreenChange_ = this.onFullScreenChange.bind(this);
     this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_TIME_UPDATED, this.onMediaTimeupdated_);
+    this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_PROGRESS, this.onMediaProgress_);
     this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_CB_SEEK_COMPLETE, this.onMediaSeeked_);
     this.player_.addEventListener((window as any).voPlayer.events.VO_OSMP_FULLSCREEN_CHANGE, this.onFullScreenChange_);
   }
@@ -84,9 +89,11 @@ class UIProgressBar extends UIComponent {
   removePlayerListeners() {
     super.removePlayerListeners();
     this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_TIME_UPDATED, this.onMediaTimeupdated_);
+    this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_PLAY_PROGRESS, this.onMediaProgress_);
     this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_CB_SEEK_COMPLETE, this.onMediaSeeked_);
     this.player_.removeEventListener((window as any).voPlayer.events.VO_OSMP_FULLSCREEN_CHANGE, this.onFullScreenChange_);
     this.onMediaTimeupdated_ = null;
+    this.onMediaProgress_ = null;
     this.onMediaSeeked_ = null;
     this.onFullScreenChange_ = null;
   }
@@ -118,8 +125,7 @@ class UIProgressBar extends UIComponent {
   }
 
   onMediaOpenFinished() {
-    let info: ProgressInfo = UITools.getProgressInfo(this.player_);
-    this.updateProgressBarUI(info);
+    this.updateProgressBarUI();
   }
 
   onMediaTimeupdated(info) {
@@ -131,9 +137,32 @@ class UIProgressBar extends UIComponent {
       if (info.position < 0) info.position = 0;
       info.duration = info.range.end - info.range.start;
     }
-    this.updateProgressBarUI(info);
-    this.updateProgressBarHoverUI(info);
-
+    this.updateProgressInfo(info);
+    this.updateProgressBarUI();
+    // this.updateProgressBarHoverUI();
+  }
+  
+  onMediaProgress(info) {
+    this.updateProgressInfo(info);
+    this.updateProgressBarUI();
+  }
+  
+  updateProgressInfo(info) {
+    if (info.live !== undefined) {
+      this.progressInfo_.live = info.live;
+    }
+    if (info.position !== undefined) {
+      this.progressInfo_.position = info.position;
+    }
+    if (info.duration !== undefined) {
+      this.progressInfo_.duration = info.duration;
+    }
+    if (info.range !== undefined) {
+      this.progressInfo_.range = info.range;
+    }
+    if (info.validBufferLength !== undefined) {
+      this.progressInfo_.validBufferLength = info.validBufferLength;
+    }
   }
 
   onMediaSeeked() {
@@ -144,8 +173,7 @@ class UIProgressBar extends UIComponent {
   }
 
   onFullScreenChange() {
-    let info: ProgressInfo = UITools.getProgressInfo(this.player_);
-    this.updateProgressBarUI(info);
+    this.updateProgressBarUI();
   }
 
   onAdStarted(e) {
@@ -165,8 +193,7 @@ class UIProgressBar extends UIComponent {
   }
 
   onAdTimeUpdate() {
-    let info: ProgressInfo = UITools.getProgressInfo(this.player_);
-    this.updateProgressBarUI(info);
+    this.updateProgressBarUI();
   }
 
   onProgressBarMouseDown(e) {
@@ -192,9 +219,8 @@ class UIProgressBar extends UIComponent {
     // update progress bar ui
     this.progressBarContext_.movePos = this.getProgressMovePosition(e);
 
-    let info: ProgressInfo = UITools.getProgressInfo(this.player_);
-    this.updateProgressBarUI(info);
-    this.updateProgressBarHoverUI(info);
+    this.updateProgressBarUI();
+    this.updateProgressBarHoverUI();
   }
 
   onProgressBarMouseEnter(e) {
@@ -215,16 +241,14 @@ class UIProgressBar extends UIComponent {
       return;
     }
 
-    let info: ProgressInfo = UITools.getProgressInfo(this.player_);
-
     // update progress bar ui
     let movePos = this.getProgressMovePosition(e);
     this.progressBarMoveContext_.movePos = movePos;
-    this.updateProgressBarHoverUI(info);
+    this.updateProgressBarHoverUI();
 
     this.eventbus_.emit(Events.PROGRESSBAR_MOUSEMOVE, {
       movePos: movePos,
-      progressInfo: info
+      progressInfo: this.progressInfo_
     });
     this.vopScrubberContainer_.style.display = 'block';
   }
@@ -263,13 +287,11 @@ class UIProgressBar extends UIComponent {
       this.progressBarContext_.movePos = movePos;
     }
 
-    let info: ProgressInfo = UITools.getProgressInfo(this.player_);
-    this.updateProgressBarUI(info);
-    this.updateProgressBarHoverUI(info);
+    this.updateProgressBarHoverUI();
 
     this.eventbus_.emit(Events.PROGRESSBAR_MOUSEMOVE, {
       movePos: movePos,
-      progressInfo: info
+      progressInfo: this.progressInfo_
     });
     this.vopScrubberContainer_.style.display = 'block';
   }
@@ -290,14 +312,12 @@ class UIProgressBar extends UIComponent {
       }
     }
 
-    let info: ProgressInfo = UITools.getProgressInfo(this.player_);
-
     // update ui first
     if (this.progressBarContext_) {
       this.progressBarContext_.movePos = this.getProgressMovePosition(e);
     }
-    this.updateProgressBarUI(info);
-    this.updateProgressBarHoverUI(info);
+    this.updateProgressBarUI();
+    // this.updateProgressBarHoverUI();
 
     this.eventbus_.emit(Events.PROGRESSBAR_MOUSELEAVE);
     let x = this.supportsTouches_ ? e.pageX : e.clientX;
@@ -344,7 +364,7 @@ class UIProgressBar extends UIComponent {
     }
 
     // update time progress scrubber button
-    let info: ProgressInfo = UITools.getProgressInfo(this.player_);
+    let info = this.progressInfo_;
     let targetPosition = (offsetX / rect.width) * info.duration;
 
     if (info.live) {
@@ -370,23 +390,19 @@ class UIProgressBar extends UIComponent {
     } else {
       uiPosition = info.position;
       // update time progress bar
-      let audioBufferLength = this.player_.getValidBufferDuration('audio');
-      let videoBufferLength = this.player_.getValidBufferDuration('video');
-      let bufferLength = Math.min(
-          !isNaN(videoBufferLength) ? videoBufferLength : Number.MAX_VALUE,
-          !isNaN(audioBufferLength) ? audioBufferLength : Number.MAX_VALUE);
-      uiBufferedPos = uiPosition + bufferLength;
+      let validBufferLength = info.validBufferLength
+      uiBufferedPos = uiPosition + validBufferLength;
     }
 
     // make a check for position
     uiBufferedPos = (uiBufferedPos <= info.duration) ? uiBufferedPos: info.duration;
     uiPosition = (uiPosition <= info.duration) ? uiPosition : info.duration;
 
-    loadProgressTransform = 'scaleX(' + uiBufferedPos / info.duration + ')';
-    playProgressTransform = 'scaleX(' + uiPosition / info.duration + ')';
+    loadProgressTransform = 'scaleX(' + (info.duration === 0 ? 1 : uiBufferedPos / info.duration) + ')';
+    playProgressTransform = 'scaleX(' + (info.duration === 0 ? 1 : uiPosition / info.duration) + ')';
 
     // update time progress scrubber button
-    scrubberContainerTransform = 'translateX(' + ((uiPosition / info.duration) * this.element_.clientWidth).toString() + 'px)';
+    scrubberContainerTransform = 'translateX(' + ((info.duration === 0 ? 1 : uiPosition / info.duration) * this.element_.clientWidth).toString() + 'px)';
 
     let ret = {
       loadProgressTransform,
@@ -398,9 +414,9 @@ class UIProgressBar extends UIComponent {
     return ret;
   }
 
-  updateProgressBarUI(info) {
+  updateProgressBarUI() {
     // part - input
-    let ret = this.getProgressBarUIStyle(info);
+    let ret = this.getProgressBarUIStyle(this.progressInfo_);
 
     // part - logic process
     this.vopLoadProgress_.style.transform = ret.loadProgressTransform;
@@ -410,13 +426,13 @@ class UIProgressBar extends UIComponent {
     this.vopScrubberContainer_.style.transform = ret.scrubberContainerTransform;
   }
 
-  updateProgressBarHoverUI(info) {
+  updateProgressBarHoverUI() {
     // do not update hover process bar on IE
     // for IE only:playready: no video only audio was outputed after playing for more than 20s
     if (!!(window as any).ActiveXObject || 'ActiveXObject' in window) {
       return;
     }
-
+    let info = this.progressInfo_;
     let movePos = 0;
     if (this.progressBarContext_) {
       movePos = this.progressBarContext_.movePos;
@@ -444,7 +460,7 @@ class UIProgressBar extends UIComponent {
     // reset ui
     this.vopLoadProgress_.style.transform = 'scaleX(0)';
     this.vopPlayProgress_.style.transform = 'scaleX(0)';
-    this.vopScrubberContainer_.style.transform = 'translateX(0x)';
+    this.vopScrubberContainer_.style.transform = 'translateX(0px)';
     this.vopHoverProgress_.style.transform = 'scaleX(0)';
     this.vopHoverProgress_.style.left = '0px';
   }

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --devtool source-map --mode development",
-    "build": "webpack --devtool source-map --mode production"
+    "build": "webpack --devtool none --mode production"
   },
   "author": "Joseph",
   "devDependencies": {

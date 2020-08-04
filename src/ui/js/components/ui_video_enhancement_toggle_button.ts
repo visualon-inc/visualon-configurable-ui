@@ -6,7 +6,7 @@ class UIVideoEnhancementToggleButton extends UIButton {
   constructor(context) {
     super(context);
 
-    this.initElement('vop-button vop-video-enhancement-button', 'video enhancement');
+    this.initElement('vop-video-enhancement-button', 'video enhancement');
     this.element_.setAttribute('data-id', ID.VIDEO_ENHANCEMENT_BUTTON);
   }
 
@@ -20,7 +20,7 @@ class UIVideoEnhancementToggleButton extends UIButton {
 
   updateBtnState() {
     // when in 360vr mode, enhancement will be hidden, canvas only can do one job.
-    if (this.player_.isVRMode()) {
+    if (this.player_.VR && this.player_.VR.isVRMode()) {
       this.hide();
     } else {
       this.show();
